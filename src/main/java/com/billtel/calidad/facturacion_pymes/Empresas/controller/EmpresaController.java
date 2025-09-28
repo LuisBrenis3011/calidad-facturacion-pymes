@@ -2,8 +2,6 @@ package com.billtel.calidad.facturacion_pymes.Empresas.controller;
 
 import com.billtel.calidad.facturacion_pymes.Empresas.entities.Empresa;
 import com.billtel.calidad.facturacion_pymes.Empresas.services.EmpresaService;
-import com.billtel.calidad.facturacion_pymes.Productos.entities.Producto;
-import com.billtel.calidad.facturacion_pymes.Productos.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/empresa")
 public class EmpresaController {
 
     final private EmpresaService empresaService;

@@ -3,6 +3,8 @@ package com.billtel.calidad.facturacion_pymes.Empresas.entities;
 import com.billtel.calidad.facturacion_pymes.Comprobantes.entities.Comprobante;
 import com.billtel.calidad.facturacion_pymes.Productos.entities.Producto;
 import com.billtel.calidad.facturacion_pymes.Usuarios.entities.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,6 +20,7 @@ public class Empresa {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
+    @JsonIgnoreProperties({"empresas", "hibernateLazyInitializer", "handler"})
     private Usuario usuario;
 
     @Column(name = "ruc", nullable = false, length = 11, unique = true)
@@ -39,10 +42,9 @@ public class Empresa {
     private String logo;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Producto> productos;
 
-    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comprobante> comprobantes;
 
     public Long getId() {
         return id;
@@ -76,6 +78,14 @@ public class Empresa {
         this.razonSocial = razonSocial;
     }
 
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -90,14 +100,6 @@ public class Empresa {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
     }
 
     public String getLogo() {
@@ -115,12 +117,5 @@ public class Empresa {
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
-
-    public List<Comprobante> getComprobantes() {
-        return comprobantes;
-    }
-
-    public void setComprobantes(List<Comprobante> comprobantes) {
-        this.comprobantes = comprobantes;
-    }
 }
+

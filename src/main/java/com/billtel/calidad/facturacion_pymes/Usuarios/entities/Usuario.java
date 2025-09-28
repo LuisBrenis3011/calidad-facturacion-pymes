@@ -1,7 +1,9 @@
 package com.billtel.calidad.facturacion_pymes.Usuarios.entities;
 
-import com.billtel.calidad.facturacion_pymes.Empresas.entities.Empresa;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
 @Entity
@@ -13,22 +15,80 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long id;
 
-    @Column(name = "username", nullable = false, length = 50, unique = true)
+    @NotBlank
+    @Column(unique = true)
     private String username;
 
-    @Column(name = "password", nullable = false, length = 255)
+    @NotBlank
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "rol", nullable = false, length = 10)
-    private Rol rol = Rol.VENDEDOR;
+    private Boolean enabled;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Empresa> empresas;
+    @Transient
+    private boolean admin;
 
-    public enum Rol {
-        ADMIN,
-        VENDEDOR
+    @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
+    @ManyToMany
+    @JoinTable(
+            name = "usuarios_roles",
+            joinColumns = {@JoinColumn(name = "id_usuario")},
+            inverseJoinColumns = {@JoinColumn(name = "id_rol")},
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"id_usuario", "id_rol"})}
+
+    )
+    private List<Rol> roles;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public Boolean isEnabled() {
+
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+
+        this.enabled = enabled;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
-

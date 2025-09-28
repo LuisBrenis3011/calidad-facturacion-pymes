@@ -1,37 +1,15 @@
-package com.billtel.calidad.facturacion_pymes.Productos.entities;
+package com.billtel.calidad.facturacion_pymes.Productos.dto;
 
-import com.billtel.calidad.facturacion_pymes.Empresas.entities.Empresa;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "producto")
-public class Producto {
+public class ProductoDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_empresa", nullable = false)
-    @JsonIgnoreProperties({"productos", "hibernateLazyInitializer", "handler"})
-    private Empresa empresa;
-
-    @Column(name = "nombre", nullable = false, length = 100)
+    private Long empresaId;
     private String nombre;
-
-    @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
-
-    @Column(name = "valor_unitario", nullable = false, precision = 10, scale = 2)
     private BigDecimal valorUnitario;
-
-    @Column(name = "igv", nullable = false, precision = 10, scale = 2)
     private BigDecimal igv;
-
-    @Column(name = "unidad_medida", length = 20)
     private String unidadMedida;
 
     public Long getId() {
@@ -42,12 +20,12 @@ public class Producto {
         this.id = id;
     }
 
-    public Empresa getEmpresa() {
-        return empresa;
+    public Long getEmpresaId() {
+        return empresaId;
     }
 
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
+    public void setEmpresaId(Long empresaId) {
+        this.empresaId = empresaId;
     }
 
     public String getNombre() {
@@ -90,4 +68,3 @@ public class Producto {
         this.unidadMedida = unidadMedida;
     }
 }
-
