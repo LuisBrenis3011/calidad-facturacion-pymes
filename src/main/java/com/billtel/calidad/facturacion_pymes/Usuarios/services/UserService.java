@@ -16,14 +16,17 @@ import java.util.Optional;
 @Service
 public class UserService implements IUserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private RolRepository rolRepository;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, RolRepository rolRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.rolRepository = rolRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     @Transactional(readOnly = true)

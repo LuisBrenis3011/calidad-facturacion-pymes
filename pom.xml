@@ -11,7 +11,7 @@
 	<groupId>com.billtel.calidad</groupId>
 	<artifactId>facturacion-pymes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>facturacion-mypes</name>
+	<name>facturacion-pymes</name>
 	<description>servicio para facturar a la sunat</description>
 	<url/>
 	<licenses>
