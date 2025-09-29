@@ -4,7 +4,6 @@ import com.billtel.calidad.facturacion_pymes.Usuarios.entities.Rol;
 import com.billtel.calidad.facturacion_pymes.Usuarios.entities.Usuario;
 import com.billtel.calidad.facturacion_pymes.Usuarios.repositories.UserRepository;
 import com.billtel.calidad.facturacion_pymes.Usuarios.repositories.RolRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
