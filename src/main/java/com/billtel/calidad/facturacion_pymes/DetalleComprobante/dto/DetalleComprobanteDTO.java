@@ -1,7 +1,12 @@
 package com.billtel.calidad.facturacion_pymes.DetalleComprobante.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 
+@Getter
+@Setter
 public class DetalleComprobanteDTO {
 
     private Long id;
@@ -11,51 +16,4 @@ public class DetalleComprobanteDTO {
     private BigDecimal precioUnitario;
     private BigDecimal subtotal;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getComprobanteId() {
-        return comprobanteId;
-    }
-
-    public void setComprobanteId(Long comprobanteId) {
-        this.comprobanteId = comprobanteId;
-    }
-
-    public Long getProductoId() {
-        return productoId;
-    }
-
-    public void setProductoId(Long productoId) {
-        this.productoId = productoId;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public BigDecimal getPrecioUnitario() {
-        return precioUnitario;
-    }
-
-    public void setPrecioUnitario(BigDecimal precioUnitario) {
-        this.precioUnitario = precioUnitario;
-    }
-
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
-    }
 }

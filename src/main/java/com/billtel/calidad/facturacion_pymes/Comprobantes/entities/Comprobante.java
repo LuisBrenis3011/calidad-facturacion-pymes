@@ -3,11 +3,16 @@ package com.billtel.calidad.facturacion_pymes.Comprobantes.entities;
 import com.billtel.calidad.facturacion_pymes.DetalleComprobante.entities.DetalleComprobante;
 import com.billtel.calidad.facturacion_pymes.Empresas.entities.Empresa;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "comprobante")
 public class Comprobante {
 
@@ -58,99 +63,4 @@ public class Comprobante {
         RECHAZADO
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Empresa getEmpresa() {
-        return empresa;
-    }
-
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
-    }
-
-    public String getNroDocCliente() {
-        return nroDocCliente;
-    }
-
-    public void setNroDocCliente(String nroDocCliente) {
-        this.nroDocCliente = nroDocCliente;
-    }
-
-    public String getDireccionCliente() {
-        return direccionCliente;
-    }
-
-    public void setDireccionCliente(String direccionCliente) {
-        this.direccionCliente = direccionCliente;
-    }
-
-    public String getSerie() {
-        return serie;
-    }
-
-    public void setSerie(String serie) {
-        this.serie = serie;
-    }
-
-    public Integer getCorrelativo() {
-        return correlativo;
-    }
-
-    public void setCorrelativo(Integer correlativo) {
-        this.correlativo = correlativo;
-    }
-
-    public LocalDateTime getFechaEmision() {
-        return fechaEmision;
-    }
-
-    public void setFechaEmision(LocalDateTime fechaEmision) {
-        this.fechaEmision = fechaEmision;
-    }
-
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public BigDecimal getIgvTotal() {
-        return igvTotal;
-    }
-
-    public void setIgvTotal(BigDecimal igvTotal) {
-        this.igvTotal = igvTotal;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public EstadoSunat getEstadoSunat() {
-        return estadoSunat;
-    }
-
-    public void setEstadoSunat(EstadoSunat estadoSunat) {
-        this.estadoSunat = estadoSunat;
-    }
-
-    public List<DetalleComprobante> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(List<DetalleComprobante> detalles) {
-        this.detalles = detalles;
-    }
 }

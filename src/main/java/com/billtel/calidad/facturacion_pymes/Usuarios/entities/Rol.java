@@ -1,8 +1,12 @@
 package com.billtel.calidad.facturacion_pymes.Usuarios.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "roles")
 public class Rol {
 
@@ -14,19 +18,4 @@ public class Rol {
     @Column(name = "nombre")
     private String name;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

@@ -3,10 +3,14 @@ package com.billtel.calidad.facturacion_pymes.Usuarios.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "usuario")
 public class Usuario {
 
@@ -38,33 +42,10 @@ public class Usuario {
     )
     private List<Rol> roles;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public List<Rol> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Rol> roles) {
-        this.roles = roles;
-    }
-
     public boolean isAdmin() {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
 
     public Boolean isEnabled() {
 
@@ -76,19 +57,5 @@ public class Usuario {
         this.enabled = enabled;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }
