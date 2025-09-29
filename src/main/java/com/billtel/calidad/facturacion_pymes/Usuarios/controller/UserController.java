@@ -2,7 +2,6 @@ package com.billtel.calidad.facturacion_pymes.Usuarios.controller;
 
 import com.billtel.calidad.facturacion_pymes.Usuarios.entities.Usuario;
 import com.billtel.calidad.facturacion_pymes.Usuarios.services.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/usuario")
 public class UserController {
 
-    @Autowired
     private IUserService userService;
+
+    public UserController(IUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllUsers(){
