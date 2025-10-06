@@ -2,7 +2,6 @@ package com.billtel.calidad.facturacion_pymes.layer.business.facade;
 
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.EmpresaRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.EmpresaDto;
-import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Empresa;
 
 import java.util.List;
 import java.util.Optional;

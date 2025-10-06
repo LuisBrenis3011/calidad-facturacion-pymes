@@ -1,18 +1,12 @@
 package com.billtel.calidad.facturacion_pymes.layer.domain.dto.response;
 
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Empresa;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class ProductoDto {
     private Long id;
     private Empresa empresa;
@@ -21,4 +15,5 @@ public class ProductoDto {
     private BigDecimal valorUnitario;
     private BigDecimal igv;
     private String unidadMedida;
+
 }

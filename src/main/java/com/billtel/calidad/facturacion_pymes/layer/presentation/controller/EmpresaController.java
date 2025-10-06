@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/usuario/{usuarioId}/empresas")
+@RequestMapping("/empresa")
 public class EmpresaController {
 
     final private IEmpresaFacade iEmpresaFacade;

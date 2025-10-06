@@ -4,18 +4,13 @@ import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "empresa")
 public class Empresa {
 
@@ -50,4 +45,5 @@ public class Empresa {
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Producto> productos;
+
 }

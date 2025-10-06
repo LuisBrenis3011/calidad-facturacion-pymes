@@ -2,18 +2,14 @@ package com.billtel.calidad.facturacion_pymes.layer.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Table(name = "producto")
 public class Producto {
     @Id
@@ -40,4 +36,6 @@ public class Producto {
 
     @Column(name = "unidad_medida", length = 20)
     private String unidadMedida;
+
+
 }

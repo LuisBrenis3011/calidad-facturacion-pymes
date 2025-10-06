@@ -7,7 +7,6 @@ import com.billtel.calidad.facturacion_pymes.layer.business.service.IEmpresaServ
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IProductoService;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.EmpresaRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.EmpresaDto;
-import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Empresa;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

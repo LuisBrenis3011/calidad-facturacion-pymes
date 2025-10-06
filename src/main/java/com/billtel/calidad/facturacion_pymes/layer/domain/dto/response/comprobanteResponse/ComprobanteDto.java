@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class ComprobanteDto {
+public  class ComprobanteDto {
     private Integer id;
     private Integer idEmpresa;
     private String nroDocCliente;
