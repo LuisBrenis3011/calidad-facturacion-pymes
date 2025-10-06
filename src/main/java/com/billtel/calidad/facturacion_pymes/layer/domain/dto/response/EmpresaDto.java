@@ -1,7 +1,7 @@
 package com.billtel.calidad.facturacion_pymes.layer.domain.dto.response;
 
-import com.billtel.calidad.facturacion_pymes.Productos.entities.Producto;
-import com.billtel.calidad.facturacion_pymes.Usuarios.entities.Usuario;
+import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Producto;
+import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

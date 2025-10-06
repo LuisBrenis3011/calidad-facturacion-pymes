@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface EmpresaDtoMapper {
-    EmpresaDto toDTO(Empresa domain);
+    EmpresaDto toDto(Empresa domain);
 }

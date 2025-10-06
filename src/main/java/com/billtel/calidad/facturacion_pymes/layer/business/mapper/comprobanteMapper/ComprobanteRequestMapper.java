@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ComprobanteRequestMapper {
-    Comprobante ToDomain(ComprobanteRequest request);
+    Comprobante toDomain(ComprobanteRequest request);
 }
