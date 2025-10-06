@@ -3,7 +3,6 @@ package com.billtel.calidad.facturacion_pymes.layer.business.facade.impl;
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IUsuarioFacade;
 import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuarioMapper.UsuarioDtoMapper;
 import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuarioMapper.UsuarioRequestMapper;
-import com.billtel.calidad.facturacion_pymes.layer.business.service.IComprobanteService;
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IEmpresaService;
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IUsuarioService;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.UsuarioRequest;
