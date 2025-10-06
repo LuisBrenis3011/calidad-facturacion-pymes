@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -21,21 +22,29 @@ public class ProductoFacade implements IProductoFacade {
 
     @Override
     public List<ProductoDto> findAll() {
-        return List.of();
+        var users = productoService.findAll();
+
+        return users.stream()
+                .map(productoDtoMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<ProductoDto> findById(Long id) {
-        return Optional.empty();
+        var user = productoService.findById(id);
+
+        return user.map(productoDtoMapper::toDto);
     }
 
     @Override
     public ProductoDto create(ProductoRequest request) {
-        return null;
+        var userRequest = productoRequestMapper.toDomain(request);
+        var userCreated = productoService.save(userRequest);
+        return productoDtoMapper.toDto(userCreated);
     }
 
     @Override
     public void deleteById(Long id) {
-
+        productoService.deleteById(id);
     }
 }

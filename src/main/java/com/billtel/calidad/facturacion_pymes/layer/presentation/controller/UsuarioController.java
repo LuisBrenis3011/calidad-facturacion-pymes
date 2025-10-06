@@ -4,7 +4,6 @@ package com.billtel.calidad.facturacion_pymes.layer.presentation.controller;
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IUsuarioFacade;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.UsuarioRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.UsuarioDto;
-import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

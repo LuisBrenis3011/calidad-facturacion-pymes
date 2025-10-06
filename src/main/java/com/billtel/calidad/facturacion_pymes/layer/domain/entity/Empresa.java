@@ -1,7 +1,6 @@
 package com.billtel.calidad.facturacion_pymes.layer.domain.entity;
 
-import com.billtel.calidad.facturacion_pymes.Productos.entities.Producto;
-import com.billtel.calidad.facturacion_pymes.Usuarios.entities.Usuario;
+import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

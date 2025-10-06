@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
@@ -24,31 +26,51 @@ public class UsuarioFacade implements IUsuarioFacade {
 
     @Override
     public Optional<UsuarioDto> findById(Long id) {
-        return Optional.empty();
+        var user = usuarioService.findById(id);
+
+        return user.map(usuarioDtoMapper::toDto);
     }
 
     @Override
     public Optional<UsuarioDto> findByUsername(String username) {
-        return Optional.empty();
+        var user = usuarioService.findByUsername(username);
+
+        return user.map(usuarioDtoMapper::toDto);
     }
 
     @Override
     public Iterable<UsuarioDto> findAll() {
-        return null;
+        var users = usuarioService.findAll();
+
+        return StreamSupport.stream(users.spliterator(), false)
+                .map(usuarioDtoMapper::toDto)
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public UsuarioDto create(UsuarioRequest request) {
-        return null;
+        var userRequest = usuarioRequestMapper.toDomain(request);
+        var userCreated = usuarioService.save(userRequest);
+        return usuarioDtoMapper.toDto(userCreated);
     }
 
     @Override
     public Optional<UsuarioDto> update(UsuarioRequest request, Long id) {
-        return Optional.empty();
+        var userToUpdate = usuarioRequestMapper.toDomain(request);
+
+        var userUpdated = usuarioService.update(userToUpdate, id);
+
+        return userUpdated.map(usuarioDtoMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
 
+        var user = usuarioService.findById(id);
+
+        //aca faltaría lógica para validar jeje
+
+        usuarioService.delete(id);
     }
 }
