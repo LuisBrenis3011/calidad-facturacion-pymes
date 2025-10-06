@@ -1,0 +1,10 @@
+package com.billtel.calidad.facturacion_pymes.layer.business.mapper.empresaMapper;
+
+import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.EmpresaDto;
+import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Empresa;
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface EmpresaDtoMapper {
+    EmpresaDto toDTO(Empresa domain);
+}
