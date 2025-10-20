@@ -8,7 +8,10 @@ import java.util.Optional;
 
 public interface IEmpresaFacade {
     List<EmpresaDto> findAll();
+    List<EmpresaDto> findByUsuarioId(Long usuarioId);
     Optional<EmpresaDto> findById(Long id);
+    Optional<EmpresaDto> findByIdAndUsuarioId(Long id, Long usuarioId);
     EmpresaDto create(EmpresaRequest request);
     void deleteById(Long id);
+    void deleteByIdAndUsuarioId(Long id, Long usuarioId);
 }

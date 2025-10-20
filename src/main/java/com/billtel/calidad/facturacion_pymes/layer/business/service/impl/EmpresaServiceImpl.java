@@ -26,8 +26,18 @@ public class EmpresaServiceImpl implements IEmpresaService {
     }
 
     @Override
+    public List<Empresa> findByUsuarioId(Long usuarioId) {
+        return empresaRepository.findByUsuarioId(usuarioId);
+    }
+
+    @Override
     public Optional<Empresa> findById(Long id) {
         return empresaRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Empresa> findByIdAndUsuarioId(Long id, Long usuarioId) {
+        return empresaRepository.findByIdAndUsuarioId(id, usuarioId);
     }
 
     @Override
@@ -38,5 +48,11 @@ public class EmpresaServiceImpl implements IEmpresaService {
     @Override
     public void deleteById(Long id) {
         empresaRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIdAndUsuarioId(Long id, Long usuarioId) {
+        empresaRepository.findByIdAndUsuarioId(id, usuarioId)
+                .ifPresent(empresa -> empresaRepository.deleteById(id));
     }
 }

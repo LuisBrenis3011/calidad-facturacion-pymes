@@ -8,7 +8,10 @@ import java.util.Optional;
 
 public interface IProductoFacade {
     List<ProductoDto> findAll();
+    List<ProductoDto> findByEmpresaId(Long empresaId);
     Optional<ProductoDto> findById(Long id);
+    Optional<ProductoDto> findByIdAndEmpresaId(Long id, Long empresaId);
     ProductoDto create(ProductoRequest request);
     void deleteById(Long id);
+    void deleteByIdAndEmpresaId(Long id, Long empresaId);
 }

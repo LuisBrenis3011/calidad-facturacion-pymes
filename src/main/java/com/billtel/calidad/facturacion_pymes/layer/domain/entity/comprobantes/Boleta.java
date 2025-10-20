@@ -14,7 +14,8 @@ import lombok.Setter;
 @Table(name = "boleta")
 @DiscriminatorValue("BOLETA")
 public class Boleta extends Comprobante {
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_documento_cliente")
     private TipoDocumentoCliente tipoDocumentoCliente;
-    public enum TipoDocumentoCliente { DNI, CARNET_EXT, PASAPORTE, RUC }
 }

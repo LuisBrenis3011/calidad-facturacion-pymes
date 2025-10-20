@@ -33,8 +33,24 @@ public class EmpresaFacade implements IEmpresaFacade {
     }
 
     @Override
+    public List<EmpresaDto> findByUsuarioId(Long usuarioId) {
+        var empresas = empresaService.findByUsuarioId(usuarioId);
+
+        return empresas.stream()
+                .map(empresaDtoMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Optional<EmpresaDto> findById(Long id) {
         var empresa = empresaService.findById(id);
+
+        return empresa.map(empresaDtoMapper::toDto);
+    }
+
+    @Override
+    public Optional<EmpresaDto> findByIdAndUsuarioId(Long id, Long usuarioId) {
+        var empresa = empresaService.findByIdAndUsuarioId(id, usuarioId);
 
         return empresa.map(empresaDtoMapper::toDto);
     }
@@ -49,5 +65,10 @@ public class EmpresaFacade implements IEmpresaFacade {
     @Override
     public void deleteById(Long id) {
         empresaService.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIdAndUsuarioId(Long id, Long usuarioId) {
+        empresaService.deleteByIdAndUsuarioId(id, usuarioId);
     }
 }

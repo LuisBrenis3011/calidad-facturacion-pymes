@@ -1,5 +1,6 @@
 package com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobanteRequest;
 
+import com.billtel.calidad.facturacion_pymes.layer.domain.entity.comprobantes.TipoDocumentoCliente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,5 +12,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BoletaRequest extends ComprobanteRequest {
     private TipoDocumentoCliente tipoDocumentoCliente;
-    public enum TipoDocumentoCliente { DNI, CARNET_EXT, PASAPORTE, RUC }
 }

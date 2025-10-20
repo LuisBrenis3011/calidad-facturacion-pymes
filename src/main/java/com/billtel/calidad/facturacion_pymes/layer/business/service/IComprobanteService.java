@@ -7,7 +7,10 @@ import java.util.Optional;
 
 public interface IComprobanteService {
     List<Comprobante> findAll();
+    List<Comprobante> findByEmpresaId(Long empresaId);
     Optional<Comprobante> findById(Long id);
+    Optional<Comprobante> findByIdAndEmpresaId(Long id, Long empresaId);
     Comprobante save(Comprobante comprobante);
     void deleteById(Long id);
+    Integer getNextCorrelativo(Long empresaId, String serie);
 }
