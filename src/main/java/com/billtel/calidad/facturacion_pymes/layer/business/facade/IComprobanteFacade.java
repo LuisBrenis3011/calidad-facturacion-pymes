@@ -7,7 +7,9 @@ import java.util.Optional;
 
 public interface IComprobanteFacade {
     List<ComprobanteDto> findAll();
+    List<ComprobanteDto> findByEmpresaId(Long empresaId);
     Optional<ComprobanteDto> findById(Long id);
+    Optional<ComprobanteDto> findByIdAndEmpresaId(Long id, Long empresaId);
     ComprobanteDto create(ComprobanteRequest request);
     void deleteById(Long id);
 }

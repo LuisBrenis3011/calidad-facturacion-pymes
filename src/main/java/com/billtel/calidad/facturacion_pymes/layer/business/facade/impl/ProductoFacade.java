@@ -16,35 +16,57 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class ProductoFacade implements IProductoFacade {
+
     private final IProductoService productoService;
-    private final ProductoDtoMapper productoDtoMapper;
     private final ProductoRequestMapper productoRequestMapper;
+    private final ProductoDtoMapper productoDtoMapper;
 
     @Override
     public List<ProductoDto> findAll() {
-        var users = productoService.findAll();
+        var productos = productoService.findAll();
 
-        return users.stream()
+        return productos.stream()
+                .map(productoDtoMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductoDto> findByEmpresaId(Long empresaId) {
+        var productos = productoService.findByEmpresaId(empresaId);
+
+        return productos.stream()
                 .map(productoDtoMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<ProductoDto> findById(Long id) {
-        var user = productoService.findById(id);
+        var producto = productoService.findById(id);
 
-        return user.map(productoDtoMapper::toDto);
+        return producto.map(productoDtoMapper::toDto);
+    }
+
+    @Override
+    public Optional<ProductoDto> findByIdAndEmpresaId(Long id, Long empresaId) {
+        var producto = productoService.findByIdAndEmpresaId(id, empresaId);
+
+        return producto.map(productoDtoMapper::toDto);
     }
 
     @Override
     public ProductoDto create(ProductoRequest request) {
-        var userRequest = productoRequestMapper.toDomain(request);
-        var userCreated = productoService.save(userRequest);
-        return productoDtoMapper.toDto(userCreated);
+        var productoRequest = productoRequestMapper.toDomain(request);
+        var productoCreated = productoService.save(productoRequest);
+        return productoDtoMapper.toDto(productoCreated);
     }
 
     @Override
     public void deleteById(Long id) {
         productoService.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIdAndEmpresaId(Long id, Long empresaId) {
+        productoService.deleteByIdAndEmpresaId(id, empresaId);
     }
 }
