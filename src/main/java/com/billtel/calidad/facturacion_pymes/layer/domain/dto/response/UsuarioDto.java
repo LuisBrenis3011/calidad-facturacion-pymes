@@ -2,8 +2,6 @@ package com.billtel.calidad.facturacion_pymes.layer.domain.dto.response;
 
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.simplificados.EmpresaSimpleDto;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 

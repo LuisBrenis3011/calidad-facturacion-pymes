@@ -1,6 +1,5 @@
 package com.billtel.calidad.facturacion_pymes.layer.domain.dto.request;
 
-import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Empresa;
 import lombok.*;
 
 import java.math.BigDecimal;

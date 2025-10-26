@@ -59,8 +59,7 @@ public class EmpresaController {
     public ResponseEntity<?> updateByUsuario(@PathVariable Long id, @PathVariable Long usuarioId, @RequestBody EmpresaRequest request) {
         Optional<EmpresaDto> empresaOptional = iEmpresaFacade.findByIdAndUsuarioId(id, usuarioId);
         if (empresaOptional.isPresent()) {
-            // El request ya no tiene objetos anidados completos
-            request.setUsuarioId(usuarioId);  // Aseguramos que use el usuario correcto
+            request.setUsuarioId(usuarioId);
             return ResponseEntity.status(HttpStatus.OK).body(iEmpresaFacade.create(request));
         }
         return ResponseEntity.notFound().build();
