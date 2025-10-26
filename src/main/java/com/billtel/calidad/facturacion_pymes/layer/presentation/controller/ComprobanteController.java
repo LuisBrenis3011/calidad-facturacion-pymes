@@ -2,7 +2,6 @@ package com.billtel.calidad.facturacion_pymes.layer.presentation.controller;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IComprobanteFacade;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobanteRequest.BoletaRequest;
-import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobanteRequest.ComprobanteRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobanteRequest.FacturaRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.comprobanteResponse.ComprobanteDto;
 import lombok.AllArgsConstructor;
@@ -19,41 +18,20 @@ public class ComprobanteController {
 
     private final IComprobanteFacade comprobanteFacade;
 
-    /**
-     * Listar todos los comprobantes de una empresa específica
-     * GET /comprobante/empresa/{empresaId}
-     */
+//  Listar todos los comprobantes de una empresa específica
     @GetMapping("/empresa/{empresaId}")
     public ResponseEntity<?> listByEmpresa(@PathVariable Long empresaId) {
         return ResponseEntity.ok(comprobanteFacade.findByEmpresaId(empresaId));
     }
 
-    /**
-     * Listar todos los comprobantes (admin)
-     * GET /comprobante
-     */
+
+//  Listar todos los comprobantes (admin)
     @GetMapping
     public ResponseEntity<?> listAll() {
         return ResponseEntity.ok(comprobanteFacade.findAll());
     }
 
-    /**
-     * Obtener un comprobante específico de una empresa
-     * GET /comprobante/{id}/empresa/{empresaId}
-     */
-    @GetMapping("/{id}/empresa/{empresaId}")
-    public ResponseEntity<?> detailsByEmpresa(@PathVariable Long id, @PathVariable Long empresaId) {
-        Optional<ComprobanteDto> comprobante = comprobanteFacade.findByIdAndEmpresaId(id, empresaId);
-        if (comprobante.isPresent()) {
-            return ResponseEntity.ok(comprobante.get());
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    /**
-     * Obtener un comprobante por ID (sin validar empresa)
-     * GET /comprobante/{id}
-     */
+//   Obtener un comprobante por ID (sin validar empresa)
     @GetMapping("/{id}")
     public ResponseEntity<?> details(@PathVariable Long id) {
         Optional<ComprobanteDto> comprobante = comprobanteFacade.findById(id);
@@ -63,10 +41,17 @@ public class ComprobanteController {
         return ResponseEntity.notFound().build();
     }
 
-    /**
-     * Crear una nueva FACTURA
-     * POST /comprobante/factura
-     */
+    //  Obtener un comprobante específico de una empresa
+    @GetMapping("/{id}/empresa/{empresaId}")
+    public ResponseEntity<?> detailsByEmpresa(@PathVariable Long id, @PathVariable Long empresaId) {
+        Optional<ComprobanteDto> comprobante = comprobanteFacade.findByIdAndEmpresaId(id, empresaId);
+        if (comprobante.isPresent()) {
+            return ResponseEntity.ok(comprobante.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    //  Crear una nueva FACTURA
     @PostMapping("/factura")
     public ResponseEntity<?> createFactura(@RequestBody FacturaRequest request) {
         try {
@@ -77,10 +62,8 @@ public class ComprobanteController {
         }
     }
 
-    /**
-     * Crear una nueva BOLETA
-     * POST /comprobante/boleta
-     */
+//  Crear una nueva BOLETA
+
     @PostMapping("/boleta")
     public ResponseEntity<?> createBoleta(@RequestBody BoletaRequest request) {
         try {
@@ -95,15 +78,15 @@ public class ComprobanteController {
      * Crear comprobante genérico (detecta el tipo automáticamente)
      * POST /comprobante
      */
-    @PostMapping
-    public ResponseEntity<?> create(@RequestBody ComprobanteRequest request) {
-        try {
-            ComprobanteDto comprobante = comprobanteFacade.create(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(comprobante);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al crear comprobante: " + e.getMessage());
-        }
-    }
+//    @PostMapping
+//    public ResponseEntity<?> create(@RequestBody ComprobanteRequest request) {
+//        try {
+//            ComprobanteDto comprobante = comprobanteFacade.create(request);
+//            return ResponseEntity.status(HttpStatus.CREATED).body(comprobante);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Error al crear comprobante: " + e.getMessage());
+//        }
+//    }
 
     /**
      * Eliminar un comprobante

@@ -49,7 +49,6 @@ public class ProductoController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody ProductoRequest request) {
-        // Validar que la empresa existe y pertenece al usuario autenticado
         return ResponseEntity.status(HttpStatus.CREATED).body(productoFacade.create(request));
     }
 
@@ -58,7 +57,7 @@ public class ProductoController {
                                              @RequestBody ProductoRequest request) {
         Optional<ProductoDto> productoOptional = productoFacade.findByIdAndEmpresaId(id, empresaId);
         if (productoOptional.isPresent()) {
-            request.setEmpresaId(empresaId); // Aseguramos que use la empresa correcta
+            request.setEmpresaId(empresaId);
             return ResponseEntity.ok(productoFacade.create(request));
         }
         return ResponseEntity.notFound().build();

@@ -2,10 +2,7 @@ package com.billtel.calidad.facturacion_pymes.layer.domain.dto.response;
 
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.simplificados.ProductoSimpleDto;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.simplificados.UsuarioSimpleDto;
-import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Producto;
-import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import lombok.Data;
-
 import java.util.List;
 
 @Data
