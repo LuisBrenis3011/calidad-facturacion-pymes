@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class ComprobanteDto {
+public class ComprobanteDto {
     private Long id;
     private EmpresaSimpleDto empresa;
     private String nroDocCliente;
