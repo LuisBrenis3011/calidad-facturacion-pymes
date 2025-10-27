@@ -2,11 +2,16 @@ package com.billtel.calidad.facturacion_pymes.layer.business.service.impl;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IComprobanteService;
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.comprobantes.Comprobante;
+import com.billtel.calidad.facturacion_pymes.layer.domain.entity.comprobantes.DetalleComprobante;
 import com.billtel.calidad.facturacion_pymes.layer.persistence.ComprobanteRepository;
+import com.billtel.calidad.facturacion_pymes.layer.persistence.EmpresaRepository;
+import com.billtel.calidad.facturacion_pymes.layer.persistence.ProductoRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,6 +23,8 @@ import java.util.stream.StreamSupport;
 public class ComprobanteServiceImpl implements IComprobanteService {
 
     private final ComprobanteRepository comprobanteRepository;
+    private final EmpresaRepository empresaRepository;
+    private final ProductoRepository productoRepository;
 
     @Override
     public List<Comprobante> findAll() {
@@ -57,4 +64,51 @@ public class ComprobanteServiceImpl implements IComprobanteService {
                 .map(c -> c.getCorrelativo() + 1)
                 .orElse(1);
     }
+
+    @Override
+    public Comprobante createComprobante(Comprobante comprobanteBase, Long empresaId, List<DetalleComprobante> detalles) {
+        var empresa = empresaRepository.findById(empresaId)
+                .orElseThrow(() -> new RuntimeException("Empresa no encontrada"));
+        comprobanteBase.setEmpresa(empresa);
+
+        Integer correlativo = getNextCorrelativo(empresaId, comprobanteBase.getSerie());
+        comprobanteBase.setCorrelativo(correlativo);
+
+        BigDecimal subtotalTotal = BigDecimal.ZERO;
+        BigDecimal igvTotalTotal = BigDecimal.ZERO;
+        BigDecimal totalTotal = BigDecimal.ZERO;
+
+        for (DetalleComprobante detalle : detalles) {
+            var producto = productoRepository.findById(detalle.getProducto().getId())
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+            detalle.setComprobante(comprobanteBase);
+            detalle.setProducto(producto);
+            detalle.setPrecioUnitario(producto.getValorUnitario());
+
+            BigDecimal subtotal = producto.getValorUnitario().multiply(BigDecimal.valueOf(detalle.getCantidad()));
+            BigDecimal igv = subtotal.multiply(producto.getIgv()).divide(BigDecimal.valueOf(100));
+            BigDecimal total = subtotal.add(igv);
+
+            detalle.setSubtotal(subtotal);
+            detalle.setIgv(igv);
+            detalle.setTotal(total);
+
+            subtotalTotal = subtotalTotal.add(subtotal);
+            igvTotalTotal = igvTotalTotal.add(igv);
+            totalTotal = totalTotal.add(total);
+        }
+
+        comprobanteBase.setSubtotal(subtotalTotal);
+        comprobanteBase.setIgvTotal(igvTotalTotal);
+        comprobanteBase.setTotal(totalTotal);
+        comprobanteBase.setDetalles(detalles);
+        comprobanteBase.setFechaEmision(LocalDateTime.now());
+        comprobanteBase.setEstadoSunat(Comprobante.EstadoSunat.PENDIENTE);
+        System.out.println(">>> Correlativo generado: " + comprobanteBase.getCorrelativo());
+        System.out.println(">>> Serie: " + comprobanteBase.getSerie());
+
+        return comprobanteRepository.save(comprobanteBase);
+    }
+
 }

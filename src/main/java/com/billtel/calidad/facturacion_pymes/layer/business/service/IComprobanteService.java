@@ -1,6 +1,7 @@
 package com.billtel.calidad.facturacion_pymes.layer.business.service;
 
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.comprobantes.Comprobante;
+import com.billtel.calidad.facturacion_pymes.layer.domain.entity.comprobantes.DetalleComprobante;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,6 @@ public interface IComprobanteService {
     Comprobante save(Comprobante comprobante);
     void deleteById(Long id);
     Integer getNextCorrelativo(Long empresaId, String serie);
+
+    Comprobante createComprobante(Comprobante comprobanteBase, Long empresaId, List<DetalleComprobante> detalles);
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class ComprobanteRequest {
+public class ComprobanteRequest {
     private Long empresaId;
     private String nroDocCliente;
     private String nombreCliente;

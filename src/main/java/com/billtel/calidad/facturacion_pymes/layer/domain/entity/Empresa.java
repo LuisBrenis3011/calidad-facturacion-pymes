@@ -4,6 +4,8 @@ import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.List;
@@ -25,6 +27,7 @@ public class Empresa {
     private Usuario usuario;
 
     @Column(name = "ruc", nullable = false, length = 11, unique = true)
+    @NotBlank(message = "El RUC es obligatorio")
     private String ruc;
 
     @Column(name = "razon_social", nullable = false, length = 150)
@@ -34,6 +37,7 @@ public class Empresa {
     private String direccion;
 
     @Column(name = "email", length = 100)
+    @Email(message = "El email debe ser valido")
     private String email;
 
     @Column(name = "telefono", length = 20)

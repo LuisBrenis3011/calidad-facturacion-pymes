@@ -2,6 +2,7 @@ package com.billtel.calidad.facturacion_pymes.layer.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -21,18 +22,21 @@ public class Producto {
     private Empresa empresa;
 
     @Column(name = "nombre", length = 100)
+    @NotBlank(message = "El nombre del producto es obligatorio")
     private String nombre;
 
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
 
     @Column(name = "valor_unitario", precision = 10, scale = 2)
+    @NotBlank
     private BigDecimal valorUnitario;
 
     @Column(name = "igv", precision = 10, scale = 2)
     private BigDecimal igv;
 
     @Column(name = "unidad_medida", length = 20)
+    @NotBlank
     private String unidadMedida;
 
 

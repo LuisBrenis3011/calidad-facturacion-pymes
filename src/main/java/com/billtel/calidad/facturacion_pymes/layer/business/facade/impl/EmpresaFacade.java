@@ -4,7 +4,6 @@ import com.billtel.calidad.facturacion_pymes.layer.business.facade.IEmpresaFacad
 import com.billtel.calidad.facturacion_pymes.layer.business.mapper.empresaMapper.EmpresaDtoMapper;
 import com.billtel.calidad.facturacion_pymes.layer.business.mapper.empresaMapper.EmpresaRequestMapper;
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IEmpresaService;
-import com.billtel.calidad.facturacion_pymes.layer.business.service.IProductoService;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.EmpresaRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.EmpresaDto;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,6 @@ import java.util.stream.StreamSupport;
 @AllArgsConstructor
 public class EmpresaFacade implements IEmpresaFacade {
     private final IEmpresaService empresaService;
-    private final IProductoService productoService;
     private final EmpresaRequestMapper empresaRequestMapper;
     private final EmpresaDtoMapper empresaDtoMapper;
 
