@@ -40,14 +40,11 @@ public class Empresa {
     @Email(message = "El email debe ser valido")
     private String email;
 
-    @Column(name = "telefono", length = 20)
-    private String telefono;
-
-    @Column(name = "logo", length = 255)
-    private String logo;
-
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Producto> productos;
+
+    @Transient
+    private String username;
 
 }

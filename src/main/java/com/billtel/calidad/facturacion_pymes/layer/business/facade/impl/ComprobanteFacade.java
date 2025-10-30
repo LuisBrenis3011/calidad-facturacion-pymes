@@ -64,7 +64,6 @@ public class ComprobanteFacade implements IComprobanteFacade {
                 })
                 .collect(Collectors.toList());
 
-        // 🔥 Aquí está la diferencia:
         var comprobanteCreado = comprobanteService.createComprobante(
                 comprobante,
                 request.getEmpresaId(),

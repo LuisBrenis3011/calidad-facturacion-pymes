@@ -1,15 +1,17 @@
 package com.billtel.calidad.facturacion_pymes.layer.business.facade.impl;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IUsuarioFacade;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuarioMapper.UsuarioCreateRequestMapper;
 import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuarioMapper.UsuarioDtoMapper;
 import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuarioMapper.UsuarioRequestMapper;
-import com.billtel.calidad.facturacion_pymes.layer.business.service.IEmpresaService;
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IUsuarioService;
+import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.UsuarioCreateRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.UsuarioRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.UsuarioDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -19,9 +21,9 @@ import java.util.stream.StreamSupport;
 public class UsuarioFacade implements IUsuarioFacade {
 
     private final IUsuarioService usuarioService;
-    private final IEmpresaService empresaService;
     private final UsuarioDtoMapper usuarioDtoMapper;
     private final UsuarioRequestMapper usuarioRequestMapper;
+    private final UsuarioCreateRequestMapper usuarioCreateRequestMapper;
 
     @Override
     public Optional<UsuarioDto> findById(Long id) {
@@ -38,7 +40,7 @@ public class UsuarioFacade implements IUsuarioFacade {
     }
 
     @Override
-    public Iterable<UsuarioDto> findAll() {
+    public List<UsuarioDto> findAll() {
         var users = usuarioService.findAll();
 
         return StreamSupport.stream(users.spliterator(), false)
@@ -48,8 +50,8 @@ public class UsuarioFacade implements IUsuarioFacade {
 
 
     @Override
-    public UsuarioDto create(UsuarioRequest request) {
-        var userRequest = usuarioRequestMapper.toDomain(request);
+    public UsuarioDto create(UsuarioCreateRequest request) {
+        var userRequest = usuarioCreateRequestMapper.toDomain(request);
         var userCreated = usuarioService.save(userRequest);
         return usuarioDtoMapper.toDto(userCreated);
     }

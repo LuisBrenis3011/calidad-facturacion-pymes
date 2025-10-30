@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface EmpresaRepository extends CrudRepository<Empresa, Long> {
     List<Empresa> findByUsuarioId(Long usuarioId);
     Optional<Empresa> findByIdAndUsuarioId(Long id, Long usuarioId);
+    List<Empresa> findByUsuarioUsername(String username);
+    Optional<Empresa> findByIdAndUsuarioUsername(Long id, String username);
 }

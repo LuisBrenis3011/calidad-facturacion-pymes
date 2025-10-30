@@ -6,6 +6,7 @@ import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Rol;
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import com.billtel.calidad.facturacion_pymes.layer.persistence.users.RolRepository;
 import com.billtel.calidad.facturacion_pymes.layer.persistence.users.UsuarioRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,18 +17,11 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class UsuarioServiceImpl implements IUsuarioService {
-    private UsuarioRepository userRepository;
-
-    private RolRepository rolRepository;
-
-    private PasswordEncoder passwordEncoder;
-
-    public UsuarioServiceImpl(UsuarioRepository userRepository, RolRepository rolRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.rolRepository = rolRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final UsuarioRepository userRepository;
+    private final RolRepository rolRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -51,23 +45,18 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public Usuario save(Usuario user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(getRoles(user));
-        user.setEnabled(true);
         return userRepository.save(user);
     }
 
     @Override
     @Transactional
     public Optional<Usuario> update(Usuario user, Long id){
-        Optional<Usuario> userOptional = this.findById(id);
+        Optional<Usuario> userOptional = findById(id);
         if(userOptional.isPresent()){
-            Usuario userDB = userOptional.get();
+            Usuario userDB = userOptional.orElseThrow();
             userDB.setUsername(user.getUsername());
             userDB.setRoles(getRoles(user));
-            if(user.isEnabled() == null){
-                userDB.setEnabled(true);
-            }else{
-                userDB.setEnabled(user.isEnabled());
-            }
+            userDB.setEmail(user.getEmail());
             return Optional.of(userRepository.save(userDB));
         }
         return Optional.empty();

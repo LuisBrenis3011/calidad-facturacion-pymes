@@ -2,7 +2,6 @@ package com.billtel.calidad.facturacion_pymes.layer.presentation.controller;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IComprobanteFacade;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobanteRequest.BoletaRequest;
-import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobanteRequest.ComprobanteRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobanteRequest.FacturaRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.comprobanteResponse.BoletaDto;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.comprobanteResponse.ComprobanteDto;

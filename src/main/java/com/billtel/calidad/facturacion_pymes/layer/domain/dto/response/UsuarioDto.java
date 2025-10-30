@@ -9,7 +9,8 @@ import java.util.List;
 public class UsuarioDto {
     private Long id;
     private String username;
-    // Lista de empresas simplificadas (sin usuario ni productos)
+    private String email;
+    private boolean admin;
     private List<EmpresaSimpleDto> empresas;
 
 }
