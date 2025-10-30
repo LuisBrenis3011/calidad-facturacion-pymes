@@ -1,18 +1,21 @@
 package com.billtel.calidad.facturacion_pymes.layer.domain.dto.request;
 
-import com.billtel.calidad.facturacion_pymes.layer.domain.dto.simplificados.ProductoSimpleDto;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class EmpresaRequest {
-    private Long usuarioId;
+
+    @NotBlank(message = "El campo 'ruc' es obligatorio y no puede ser duplicado")
     private String ruc;
+    @NotBlank(message = "El campo 'razon social' es obligatorio")
     private String razonSocial;
+    @NotBlank(message = "El campo 'direccion' es obligatorio")
     private String direccion;
+
+    private String username;
+    @Email(message = "El email debe ser valido")
     private String email;
-    private String telefono;
-    private String logo;
-    private List<ProductoSimpleDto> productos;
+
 }

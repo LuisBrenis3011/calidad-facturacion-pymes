@@ -14,4 +14,6 @@ public interface IEmpresaFacade {
     EmpresaDto create(EmpresaRequest request);
     void deleteById(Long id);
     void deleteByIdAndUsuarioId(Long id, Long usuarioId);
+    List<EmpresaDto> findByUsername(String username);
+    Optional<EmpresaDto> update(EmpresaRequest request, Long id);
 }

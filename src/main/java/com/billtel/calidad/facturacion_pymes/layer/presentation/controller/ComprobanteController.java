@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,35 +21,29 @@ public class ComprobanteController {
 
 //  Listar todos los comprobantes de una empresa específica
     @GetMapping("/empresa/{empresaId}")
-    public ResponseEntity<?> listByEmpresa(@PathVariable Long empresaId) {
+    public ResponseEntity<List<ComprobanteDto>> listByEmpresa(@PathVariable Long empresaId) {
         return ResponseEntity.ok(comprobanteFacade.findByEmpresaId(empresaId));
     }
 
 
 //  Listar todos los comprobantes (admin)
     @GetMapping
-    public ResponseEntity<?> listAll() {
+    public ResponseEntity<List<ComprobanteDto>> listAll() {
         return ResponseEntity.ok(comprobanteFacade.findAll());
     }
 
 //   Obtener un comprobante por ID (sin validar empresa)
     @GetMapping("/{id}")
-    public ResponseEntity<?> details(@PathVariable Long id) {
+    public ResponseEntity<ComprobanteDto> details(@PathVariable Long id) {
         Optional<ComprobanteDto> comprobante = comprobanteFacade.findById(id);
-        if (comprobante.isPresent()) {
-            return ResponseEntity.ok(comprobante.get());
-        }
-        return ResponseEntity.notFound().build();
+        return comprobante.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     //  Obtener un comprobante específico de una empresa
     @GetMapping("/{id}/empresa/{empresaId}")
-    public ResponseEntity<?> detailsByEmpresa(@PathVariable Long id, @PathVariable Long empresaId) {
+    public ResponseEntity<ComprobanteDto> detailsByEmpresa(@PathVariable Long id, @PathVariable Long empresaId) {
         Optional<ComprobanteDto> comprobante = comprobanteFacade.findByIdAndEmpresaId(id, empresaId);
-        if (comprobante.isPresent()) {
-            return ResponseEntity.ok(comprobante.get());
-        }
-        return ResponseEntity.notFound().build();
+        return comprobante.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     //  Crear una nueva FACTURA
@@ -93,7 +88,7 @@ public class ComprobanteController {
      * DELETE /comprobante/{id}
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         Optional<ComprobanteDto> comprobanteOptional = comprobanteFacade.findById(id);
         if (comprobanteOptional.isPresent()) {
             comprobanteFacade.deleteById(id);
@@ -107,7 +102,7 @@ public class ComprobanteController {
      * DELETE /comprobante/{id}/empresa/{empresaId}
      */
     @DeleteMapping("/{id}/empresa/{empresaId}")
-    public ResponseEntity<?> deleteByEmpresa(@PathVariable Long id, @PathVariable Long empresaId) {
+    public ResponseEntity<Void> deleteByEmpresa(@PathVariable Long id, @PathVariable Long empresaId) {
         Optional<ComprobanteDto> comprobanteOptional = comprobanteFacade.findByIdAndEmpresaId(id, empresaId);
         if (comprobanteOptional.isPresent()) {
             comprobanteFacade.deleteById(id);

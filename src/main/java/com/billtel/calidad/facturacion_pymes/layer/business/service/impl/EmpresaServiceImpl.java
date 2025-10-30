@@ -2,8 +2,11 @@ package com.billtel.calidad.facturacion_pymes.layer.business.service.impl;
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Empresa;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IEmpresaService;
+import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import com.billtel.calidad.facturacion_pymes.layer.persistence.EmpresaRepository;
+import com.billtel.calidad.facturacion_pymes.layer.persistence.users.UsuarioRepository;
 import jakarta.transaction.Transactional;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,17 +15,20 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@Data
 @Transactional
 public class EmpresaServiceImpl implements IEmpresaService {
-    final private EmpresaRepository empresaRepository;
-
-    public EmpresaServiceImpl(EmpresaRepository empresaRepository) {
-        this.empresaRepository = empresaRepository;
-    }
+    private final EmpresaRepository empresaRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public List<Empresa> findAll() {
         return StreamSupport.stream(empresaRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Empresa> findByUsername(String username) {
+        return empresaRepository.findByUsuarioUsername(username);
     }
 
     @Override
@@ -41,9 +47,28 @@ public class EmpresaServiceImpl implements IEmpresaService {
     }
 
     @Override
-    public Empresa save(Empresa empresa) {
+    public Empresa save(String username, Empresa empresa) {
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + username));
+
+        empresa.setUsuario(usuario);
         return empresaRepository.save(empresa);
     }
+
+    @Transactional
+    @Override
+    public Optional<Empresa> update(Empresa empresa, Long id){
+        Optional<Empresa> empresaOptional = findById(id);
+        if(empresaOptional.isPresent()){
+            Empresa empresaDB = empresaOptional.orElseThrow();
+            empresaDB.setUsuario(empresa.getUsuario());
+            return Optional.of(empresaRepository.save(empresaDB));
+        }
+        return Optional.empty();
+    }
+
+
 
     @Override
     public void deleteById(Long id) {

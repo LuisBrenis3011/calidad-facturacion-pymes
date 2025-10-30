@@ -12,7 +12,8 @@ public interface UsuarioDtoMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
-
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "admin", target = "admin")
     UsuarioDto toDto(Usuario domain);
 }
 

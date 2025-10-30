@@ -2,8 +2,10 @@ package com.billtel.calidad.facturacion_pymes.layer.domain.entity.users;
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Empresa;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.List;
@@ -26,7 +28,10 @@ public class Usuario {
     @NotBlank
     private String password;
 
-    private Boolean enabled;
+    @NotEmpty
+    @Email
+    @Column(unique = true)
+    private String email;
 
     @Transient
     private boolean admin;
@@ -45,14 +50,5 @@ public class Usuario {
 
     )
     private List<Rol> roles;
-
-    public Boolean isEnabled() {
-
-        return enabled;
-    }
-
-    public boolean isAdmin() {
-        return admin;
-    }
 
 }

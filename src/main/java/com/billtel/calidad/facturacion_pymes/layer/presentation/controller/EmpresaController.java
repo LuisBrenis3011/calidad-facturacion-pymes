@@ -5,100 +5,74 @@ import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.EmpresaReq
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.EmpresaDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/empresa")
 public class EmpresaController {
 
-    final private IEmpresaFacade iEmpresaFacade;
+    private final IEmpresaFacade iEmpresaFacade;
 
     public EmpresaController(IEmpresaFacade iEmpresaFacade) {
         this.iEmpresaFacade = iEmpresaFacade;
     }
 
-    // Listar todas las empresas de un usuario específico
-    @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<?> listByUsuario(@PathVariable Long usuarioId) {
-        return ResponseEntity.ok(iEmpresaFacade.findByUsuarioId(usuarioId));
-    }
-
-    // Listar todas las empresas (admin)
     @GetMapping
-    public ResponseEntity<?> List() {
-        return ResponseEntity.ok(iEmpresaFacade.findAll());
-    }
-
-    // Obtener una empresa específica de un usuario
-    @GetMapping("/{id}/usuario/{usuarioId}")
-    public ResponseEntity<?> detailsByUsuario(@PathVariable Long id, @PathVariable Long usuarioId) {
-        Optional<EmpresaDto> empresa = iEmpresaFacade.findByIdAndUsuarioId(id, usuarioId);
-        if (empresa.isPresent()) {
-            return ResponseEntity.ok(empresa.orElseThrow());
+    public ResponseEntity<List<EmpresaDto>> list(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.notFound().build();
-    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> details(@PathVariable Long id) {
-        Optional<EmpresaDto> empresa = iEmpresaFacade.findById(id);
-        if (empresa.isPresent()) {
-            return ResponseEntity.ok(empresa.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+//        // Si es admin, retorna todas
+//        if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+//            return ResponseEntity.ok(iEmpresaFacade.findAll());
+//        }
+
+        return ResponseEntity.ok(iEmpresaFacade.findByUsername(userDetails.getUsername()));
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody EmpresaRequest request) {
+    public ResponseEntity<EmpresaDto> create(@RequestBody EmpresaRequest request,
+                                             @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        request.setUsername(userDetails.getUsername());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(iEmpresaFacade.create(request));
     }
 
-    @PutMapping("/{id}/usuario/{usuarioId}")
-    public ResponseEntity<?> updateByUsuario(@PathVariable Long id, @PathVariable Long usuarioId, @RequestBody EmpresaRequest request) {
-        Optional<EmpresaDto> empresaOptional = iEmpresaFacade.findByIdAndUsuarioId(id, usuarioId);
-        if (empresaOptional.isPresent()) {
-            request.setUsuarioId(usuarioId);
-            return ResponseEntity.status(HttpStatus.OK).body(iEmpresaFacade.create(request));
+    @PutMapping("/{id}")
+    public ResponseEntity<EmpresaDto> update(@PathVariable Long id,
+                                             @RequestBody EmpresaRequest request,
+                                             @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.notFound().build();
-    }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody EmpresaRequest request) {
-//        Optional<EmpresaDto> empresaOptional = iEmpresaFacade.findById(id);
-//        if (empresaOptional.isPresent()) {
-//            EmpresaDto empresaDB = empresaOptional.orElseThrow();
-//            empresaDB.setEmail(request.getEmail());
-//            empresaDB.setRuc(request.getRuc());
-//            empresaDB.setProductos(request.getProductos());
-//            empresaDB.setDireccion(request.getDireccion());
-//            empresaDB.setTelefono(request.getTelefono());
-//            empresaDB.setUsuario(request.getUsuario());
-//            empresaDB.setRazonSocial(request.getRazonSocial());
-//            return ResponseEntity.status(HttpStatus.OK).body(iEmpresaFacade.create(request));
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
 
-    @DeleteMapping("/{id}/usuario/{usuarioId}")
-    public ResponseEntity<?> deleteByUsuario(@PathVariable Long id, @PathVariable Long usuarioId) {
-        Optional<EmpresaDto> empresaOptional = iEmpresaFacade.findByIdAndUsuarioId(id, usuarioId);
-        if (empresaOptional.isPresent()) {
-            iEmpresaFacade.deleteByIdAndUsuarioId(id, usuarioId);
-            return ResponseEntity.noContent().build();
+        Optional<EmpresaDto> updated = iEmpresaFacade.update(request, id);
+        if (updated.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(updated.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<EmpresaDto> empresaOptional = iEmpresaFacade.findById(id);
-        if (empresaOptional.isPresent()) {
-            iEmpresaFacade.deleteById(id);
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.notFound().build();
+
+        iEmpresaFacade.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
+

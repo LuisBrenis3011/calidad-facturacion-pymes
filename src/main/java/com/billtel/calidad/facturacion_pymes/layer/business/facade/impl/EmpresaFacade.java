@@ -56,7 +56,7 @@ public class EmpresaFacade implements IEmpresaFacade {
     @Override
     public EmpresaDto create(EmpresaRequest request) {
         var empresaRequest = empresaRequestMapper.toDomain(request);
-        var empresaCreated = empresaService.save(empresaRequest);
+        var empresaCreated = empresaService.save(request.getUsername(), empresaRequest);
         return empresaDtoMapper.toDto(empresaCreated);
     }
 
@@ -68,5 +68,22 @@ public class EmpresaFacade implements IEmpresaFacade {
     @Override
     public void deleteByIdAndUsuarioId(Long id, Long usuarioId) {
         empresaService.deleteByIdAndUsuarioId(id, usuarioId);
+    }
+
+    @Override
+    public List<EmpresaDto> findByUsername(String username) {
+        var empresas = empresaService.findByUsername(username);
+        return empresas.stream()
+                .map(empresaDtoMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public Optional<EmpresaDto> update(EmpresaRequest request, Long id) {
+        var userToUpdate = empresaRequestMapper.toDomain(request);
+
+        var userUpdated = empresaService.update(userToUpdate, id);
+
+        return userUpdated.map(usuarioDtoMapper::toDto);
     }
 }
