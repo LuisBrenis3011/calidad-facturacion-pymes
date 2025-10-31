@@ -5,10 +5,15 @@ import lombok.*;
 
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "roles")
 public class Rol {
+
+    public Rol() {
+    }
+
+    public Rol(String name) {
+        this.name = name;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -61,12 +61,23 @@ public class ProductoFacade implements IProductoFacade {
     }
 
     @Override
+    public Optional<ProductoDto> update(Long id, ProductoRequest request) {
+        var producto = productoRequestMapper.toDomain(request);
+        return productoService.update(id, producto)
+                .map(productoDtoMapper::toDto);
+    }
+
+    @Override
     public void deleteById(Long id) {
         productoService.deleteById(id);
     }
 
-    @Override
-    public void deleteByIdAndEmpresaId(Long id, Long empresaId) {
-        productoService.deleteByIdAndEmpresaId(id, empresaId);
+    public boolean deleteByIdAndEmpresaId(Long id, Long empresaId) {
+        var producto = productoService.findByIdAndEmpresaId(id, empresaId);
+        if (producto.isPresent()) {
+            productoService.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

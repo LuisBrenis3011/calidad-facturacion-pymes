@@ -13,7 +13,7 @@ public interface UsuarioDtoMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "email", target = "email")
-    @Mapping(source = "admin", target = "admin")
+    @Mapping(target = "admin", expression = "java(domain.getRoles().stream().anyMatch(r -> r.getName().equals(\"ROLE_ADMIN\")))")
     UsuarioDto toDto(Usuario domain);
 }
 

@@ -3,6 +3,7 @@ package com.billtel.calidad.facturacion_pymes.layer.domain.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -29,7 +30,7 @@ public class Producto {
     private String descripcion;
 
     @Column(name = "valor_unitario", precision = 10, scale = 2)
-    @NotBlank
+    @NotNull(message = "El valor unitario es obligatorio")
     private BigDecimal valorUnitario;
 
     @Column(name = "igv", precision = 10, scale = 2)
@@ -38,6 +39,5 @@ public class Producto {
     @Column(name = "unidad_medida", length = 20)
     @NotBlank
     private String unidadMedida;
-
 
 }

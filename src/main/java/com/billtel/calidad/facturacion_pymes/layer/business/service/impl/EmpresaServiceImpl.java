@@ -56,19 +56,16 @@ public class EmpresaServiceImpl implements IEmpresaService {
         return empresaRepository.save(empresa);
     }
 
-    @Transactional
     @Override
-    public Optional<Empresa> update(Empresa empresa, Long id){
-        Optional<Empresa> empresaOptional = findById(id);
-        if(empresaOptional.isPresent()){
-            Empresa empresaDB = empresaOptional.orElseThrow();
-            empresaDB.setUsuario(empresa.getUsuario());
-            return Optional.of(empresaRepository.save(empresaDB));
-        }
-        return Optional.empty();
+    public Optional<Empresa> update(Empresa empresa, Long id) {
+        return findById(id).map(empresaDB -> {
+            empresaDB.setRuc(empresa.getRuc());
+            empresaDB.setDireccion(empresa.getDireccion());
+            empresaDB.setRazonSocial(empresa.getRazonSocial());
+            empresaDB.setEmail(empresa.getEmail());
+            return empresaRepository.save(empresaDB);
+        });
     }
-
-
 
     @Override
     public void deleteById(Long id) {

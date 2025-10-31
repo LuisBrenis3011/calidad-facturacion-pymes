@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.io.IOException;
@@ -68,8 +69,15 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
                             .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class)
             );
 
+            UserDetails userDetails = org.springframework.security.core.userdetails.User
+                    .withUsername(username)
+                    .authorities(authorities)
+                    .password("") // no importa, no se usa en validación
+                    .build();
+
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(request, response);

@@ -80,10 +80,10 @@ public class EmpresaFacade implements IEmpresaFacade {
 
     @Override
     public Optional<EmpresaDto> update(EmpresaRequest request, Long id) {
-        var userToUpdate = empresaRequestMapper.toDomain(request);
+        var empresaToUpdate = empresaRequestMapper.toDomain(request);
 
-        var userUpdated = empresaService.update(userToUpdate, id);
+        var empresaUpdated = empresaService.update(empresaToUpdate, id);
 
-        return userUpdated.map(usuarioDtoMapper::toDto);
+        return empresaUpdated.map(empresaDtoMapper::toDto);
     }
 }

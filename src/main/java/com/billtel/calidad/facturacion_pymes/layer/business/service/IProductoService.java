@@ -12,6 +12,7 @@ public interface IProductoService {
     Optional<Producto> findById(Long id);
     Optional<Producto> findByIdAndEmpresaId(Long id, Long empresaId);
     Producto save(Producto producto);
+    Optional<Producto> update(Long id, Producto productoRequest);
     void deleteById(Long id);
     void deleteByIdAndEmpresaId(Long id, Long empresaId);
 }
