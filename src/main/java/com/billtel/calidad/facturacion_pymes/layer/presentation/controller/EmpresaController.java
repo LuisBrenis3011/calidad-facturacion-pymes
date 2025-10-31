@@ -3,6 +3,7 @@ package com.billtel.calidad.facturacion_pymes.layer.presentation.controller;
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IEmpresaFacade;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.EmpresaRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.EmpresaDto;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,14 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/empresa")
+@CrossOrigin(originPatterns = "*")
 public class EmpresaController {
 
     private final IEmpresaFacade iEmpresaFacade;
-
-    public EmpresaController(IEmpresaFacade iEmpresaFacade) {
-        this.iEmpresaFacade = iEmpresaFacade;
-    }
 
     @GetMapping
     public ResponseEntity<List<EmpresaDto>> list(@AuthenticationPrincipal UserDetails userDetails) {

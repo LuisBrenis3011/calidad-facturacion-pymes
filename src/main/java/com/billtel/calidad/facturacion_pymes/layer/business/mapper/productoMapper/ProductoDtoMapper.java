@@ -8,11 +8,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProductoDtoMapper {
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "empresa", target = "empresa")
     @Mapping(source = "nombre", target = "nombre")
     @Mapping(source = "descripcion", target = "descripcion")
     @Mapping(source = "valorUnitario", target = "valorUnitario")
-    @Mapping(source = "igv", target = "igv")
     @Mapping(source = "unidadMedida", target = "unidadMedida")
     ProductoDto toDto(Producto domain);
 }

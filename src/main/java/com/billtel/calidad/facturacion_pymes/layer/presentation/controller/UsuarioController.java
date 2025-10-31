@@ -5,7 +5,6 @@ import com.billtel.calidad.facturacion_pymes.layer.business.facade.IUsuarioFacad
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.UsuarioCreateRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.UsuarioRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.UsuarioDto;
-import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

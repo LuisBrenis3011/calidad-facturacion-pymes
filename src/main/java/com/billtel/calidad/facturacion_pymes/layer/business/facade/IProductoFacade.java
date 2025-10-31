@@ -12,6 +12,7 @@ public interface IProductoFacade {
     Optional<ProductoDto> findById(Long id);
     Optional<ProductoDto> findByIdAndEmpresaId(Long id, Long empresaId);
     ProductoDto create(ProductoRequest request);
+    Optional<ProductoDto> update(Long id, ProductoRequest request);
     void deleteById(Long id);
-    void deleteByIdAndEmpresaId(Long id, Long empresaId);
+    boolean deleteByIdAndEmpresaId(Long id, Long empresaId);
 }
