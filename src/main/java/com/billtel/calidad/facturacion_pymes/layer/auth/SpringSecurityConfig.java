@@ -68,7 +68,7 @@ public class SpringSecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable());
+                .csrf(csrf -> csrf.disable());// CSRF disabled intentionally: stateless JWT-based authentication
 
         return http.build();
     }
