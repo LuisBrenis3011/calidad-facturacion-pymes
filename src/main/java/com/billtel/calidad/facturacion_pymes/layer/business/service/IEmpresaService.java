@@ -1,8 +1,6 @@
 package com.billtel.calidad.facturacion_pymes.layer.business.service;
 
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Empresa;
-import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;

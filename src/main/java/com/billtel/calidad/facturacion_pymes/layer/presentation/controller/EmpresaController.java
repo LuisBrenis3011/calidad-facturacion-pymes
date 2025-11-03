@@ -16,62 +16,53 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/empresa")
-@CrossOrigin(originPatterns = "*")
+@CrossOrigin(originPatterns = "*")// NOSONAR
 public class EmpresaController {
 
     private final IEmpresaFacade iEmpresaFacade;
 
     @GetMapping
     public ResponseEntity<List<EmpresaDto>> list(@AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-//        // Si es admin, retorna todas
-//        if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-//            return ResponseEntity.ok(iEmpresaFacade.findAll());
-//        }
-
-        return ResponseEntity.ok(iEmpresaFacade.findByUsername(userDetails.getUsername()));
+        return Optional.ofNullable(userDetails)
+                .map(user -> ResponseEntity.ok(iEmpresaFacade.findByUsername(user.getUsername())))
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     @PostMapping
     public ResponseEntity<EmpresaDto> create(@RequestBody EmpresaRequest request,
                                              @AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        request.setUsername(userDetails.getUsername());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(iEmpresaFacade.create(request));
+        return Optional.ofNullable(userDetails)
+                .map(user -> {
+                    request.setUsername(user.getUsername());
+                    return ResponseEntity.status(HttpStatus.CREATED).body(iEmpresaFacade.create(request));
+                })
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmpresaDto> update(@PathVariable Long id,
                                              @RequestBody EmpresaRequest request,
                                              @AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-
-        Optional<EmpresaDto> updated = iEmpresaFacade.update(request, id);
-        if (updated.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(updated.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+        return Optional.ofNullable(userDetails)
+                .map(user -> toResponseEntityWithStatus(iEmpresaFacade.update(request, id)))
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id,
                                        @AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        return Optional.ofNullable(userDetails)
+                .map(user -> {
+                    iEmpresaFacade.deleteById(id);
+                    return ResponseEntity.noContent().<Void>build();
+                })
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
 
-        iEmpresaFacade.deleteById(id);
-        return ResponseEntity.noContent().build();
+    private ResponseEntity<EmpresaDto> toResponseEntityWithStatus(Optional<EmpresaDto> optional) {
+        return optional
+                .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
+                .orElse(ResponseEntity.notFound().build());
     }
 }
 

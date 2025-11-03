@@ -1,8 +1,8 @@
 package com.billtel.calidad.facturacion_pymes.layer.business.facade.impl;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IProductoFacade;
-import com.billtel.calidad.facturacion_pymes.layer.business.mapper.productoMapper.ProductoDtoMapper;
-import com.billtel.calidad.facturacion_pymes.layer.business.mapper.productoMapper.ProductoRequestMapper;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.producto_mapper.ProductoDtoMapper;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.producto_mapper.ProductoRequestMapper;
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IProductoService;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.ProductoRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.ProductoDto;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,7 +26,7 @@ public class ProductoFacade implements IProductoFacade {
 
         return productos.stream()
                 .map(productoDtoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -36,7 +35,7 @@ public class ProductoFacade implements IProductoFacade {
 
         return productos.stream()
                 .map(productoDtoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

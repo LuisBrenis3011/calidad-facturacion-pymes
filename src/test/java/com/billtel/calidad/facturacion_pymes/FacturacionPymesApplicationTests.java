@@ -8,8 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @AutoConfigureMockMvc(addFilters = false)
 class FacturacionPymesApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() { // NOSONAR
+        // Intencionalmente vacío: test de carga de contexto
+    }
 
 }

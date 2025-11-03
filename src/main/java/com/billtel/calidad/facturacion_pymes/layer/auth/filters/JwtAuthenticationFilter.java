@@ -10,6 +10,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -44,15 +46,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             username = user.getUsername();
             password = user.getPassword();
 
-            // logger.info("Username desde request InputStream (raw) " + username);
-            // logger.info("Password desde request InputStream (raw) " + password);
-
         } catch (StreamReadException e) {
-            e.printStackTrace();
+            log.error("Error al leer el stream del request", e);
         } catch (DatabindException e) {
-            e.printStackTrace();
+            log.error("Error al mapear los datos del usuario", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error de entrada/salida al procesar el request", e);
         }
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         return authenticationManager.authenticate(authToken);

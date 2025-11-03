@@ -1,11 +1,11 @@
 package com.billtel.calidad.facturacion_pymes.layer.business.facade.impl;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IComprobanteFacade;
-import com.billtel.calidad.facturacion_pymes.layer.business.mapper.comprobanteMapper.ComprobanteDtoMapper;
-import com.billtel.calidad.facturacion_pymes.layer.business.mapper.comprobanteMapper.ComprobanteRequestMapper;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.comprobante_mapper.ComprobanteDtoMapper;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.comprobante_mapper.ComprobanteRequestMapper;
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IComprobanteService;
-import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobanteRequest.ComprobanteRequest;
-import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.comprobanteResponse.ComprobanteDto;
+import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobante_request.ComprobanteRequest;
+import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.comprobante_response.ComprobanteDto;
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Producto;
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.comprobantes.DetalleComprobante;
 import lombok.AllArgsConstructor;
@@ -27,14 +27,14 @@ public class ComprobanteFacade implements IComprobanteFacade {
     public List<ComprobanteDto> findAll() {
         return comprobanteService.findAll().stream()
                 .map(comprobanteDtoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public List<ComprobanteDto> findByEmpresaId(Long empresaId) {
         return comprobanteService.findByEmpresaId(empresaId).stream()
                 .map(comprobanteDtoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

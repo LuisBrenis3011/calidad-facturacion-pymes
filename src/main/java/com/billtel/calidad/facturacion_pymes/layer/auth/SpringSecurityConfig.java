@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +35,11 @@ public class SpringSecurityConfig {
         this.authenticationConfiguration = authenticationConfiguration;
     }
 
+    private static final String ROLE_ADMIN = "ADMIN";
+    private static final String ROLE_USER = "USER";
+    private static final String EMPRESA_BY_ID = "/empresa/{id}";
+    private static final String PRODUCTO_ALL = "/producto/**";
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -49,17 +55,21 @@ public class SpringSecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/usuario").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/usuario/{id}").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/empresa").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/empresa/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/empresa").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/empresa/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/empresa/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/producto/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/producto/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/producto/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/producto/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/usuario/{id}").hasAnyRole(ROLE_USER, ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/usuario").hasRole(ROLE_ADMIN)
+
+                        // Empresas
+                        .requestMatchers(HttpMethod.GET, "/empresa").hasAnyRole(ROLE_USER, ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.GET, EMPRESA_BY_ID).hasRole(ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/empresa").hasRole(ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.PUT, EMPRESA_BY_ID).hasRole(ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.DELETE, EMPRESA_BY_ID).hasRole(ROLE_ADMIN)
+
+                        // Productos
+                        .requestMatchers(HttpMethod.GET, PRODUCTO_ALL).hasAnyRole(ROLE_USER, ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.POST, PRODUCTO_ALL).hasRole(ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.PUT, PRODUCTO_ALL).hasRole(ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.DELETE, PRODUCTO_ALL).hasRole(ROLE_ADMIN)
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
@@ -68,7 +78,7 @@ public class SpringSecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable());// CSRF disabled intentionally: stateless JWT-based authentication
+                .csrf(AbstractHttpConfigurer::disable);// NOSONAR - CSRF is disabled intentionally because JWT is stateless authentication
 
         return http.build();
     }

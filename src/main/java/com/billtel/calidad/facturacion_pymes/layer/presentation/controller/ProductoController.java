@@ -8,55 +8,45 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/producto")
 @AllArgsConstructor
-@CrossOrigin(originPatterns = "*")
+@CrossOrigin(originPatterns = "*")// NOSONAR
 public class ProductoController {
 
     private final IProductoFacade productoFacade;
 
-    // Listar todos los productos (solo admin)
     @GetMapping
     public ResponseEntity<List<ProductoDto>> list() {
         return ResponseEntity.ok(productoFacade.findAll());
     }
 
-    // Listar productos de una empresa específica
     @GetMapping("/empresa/{empresaId}")
     public ResponseEntity<List<ProductoDto>> listByEmpresa(@PathVariable Long empresaId) {
         return ResponseEntity.ok(productoFacade.findByEmpresaId(empresaId));
     }
 
-    // Obtener producto por id
     @GetMapping("/{id}")
     public ResponseEntity<ProductoDto> getById(@PathVariable Long id) {
-        return productoFacade.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return toResponseEntity(productoFacade.findById(id));
     }
 
-    // Obtener producto de una empresa específica
     @GetMapping("/{id}/empresa/{empresaId}")
     public ResponseEntity<ProductoDto> getByIdAndEmpresa(@PathVariable Long id, @PathVariable Long empresaId) {
-        return productoFacade.findByIdAndEmpresaId(id, empresaId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return toResponseEntity(productoFacade.findByIdAndEmpresaId(id, empresaId));
     }
 
-    // Crear producto (empresaId obligatorio en el request)
     @PostMapping("/empresa/{empresaId}")
     public ResponseEntity<ProductoDto> create(
             @PathVariable Long empresaId,
             @RequestBody ProductoRequest request
     ) {
         request.setEmpresaId(empresaId);
-        ProductoDto nuevo = productoFacade.create(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productoFacade.create(request));
     }
 
-    // Actualizar producto
     @PutMapping("/{id}/empresa/{empresaId}")
     public ResponseEntity<ProductoDto> update(
             @PathVariable Long id,
@@ -64,18 +54,20 @@ public class ProductoController {
             @RequestBody ProductoRequest request
     ) {
         request.setEmpresaId(empresaId);
-        return productoFacade.update(id, request)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return toResponseEntity(productoFacade.update(id, request));
     }
 
-    // Eliminar producto de empresa específica
     @DeleteMapping("/{id}/empresa/{empresaId}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @PathVariable Long empresaId) {
-        if (productoFacade.deleteByIdAndEmpresaId(id, empresaId)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        return productoFacade.deleteByIdAndEmpresaId(id, empresaId)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
+    }
+
+    private ResponseEntity<ProductoDto> toResponseEntity(Optional<ProductoDto> optional) {
+        return optional
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
 

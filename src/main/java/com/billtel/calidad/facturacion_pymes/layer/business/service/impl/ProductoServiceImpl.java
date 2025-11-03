@@ -1,9 +1,7 @@
 package com.billtel.calidad.facturacion_pymes.layer.business.service.impl;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IProductoService;
-import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Empresa;
 import com.billtel.calidad.facturacion_pymes.layer.domain.entity.Producto;
-import com.billtel.calidad.facturacion_pymes.layer.persistence.EmpresaRepository;
 import com.billtel.calidad.facturacion_pymes.layer.persistence.ProductoRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -21,12 +18,11 @@ import java.util.stream.StreamSupport;
 public class ProductoServiceImpl implements IProductoService {
 
     private final ProductoRepository productoRepository;
-    private final EmpresaRepository empresaRepository;
 
     @Override
     public List<Producto> findAll() {
         return StreamSupport.stream(productoRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

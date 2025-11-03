@@ -51,7 +51,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Override
     @Transactional
     public Optional<Usuario> update(Usuario user, Long id){
-        Optional<Usuario> userOptional = findById(id);
+        Optional<Usuario> userOptional =  userRepository.findById(id);
         if(userOptional.isPresent()){
             Usuario userDB = userOptional.orElseThrow();
             userDB.setUsername(user.getUsername());

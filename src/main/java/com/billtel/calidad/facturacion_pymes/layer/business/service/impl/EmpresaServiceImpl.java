@@ -6,16 +6,15 @@ import com.billtel.calidad.facturacion_pymes.layer.domain.entity.users.Usuario;
 import com.billtel.calidad.facturacion_pymes.layer.persistence.EmpresaRepository;
 import com.billtel.calidad.facturacion_pymes.layer.persistence.users.UsuarioRepository;
 import jakarta.transaction.Transactional;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-@Data
+@AllArgsConstructor
 @Transactional
 public class EmpresaServiceImpl implements IEmpresaService {
     private final EmpresaRepository empresaRepository;
@@ -23,7 +22,7 @@ public class EmpresaServiceImpl implements IEmpresaService {
 
     @Override
     public List<Empresa> findAll() {
-        return StreamSupport.stream(empresaRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        return StreamSupport.stream(empresaRepository.findAll().spliterator(), false).toList();
     }
 
     @Override

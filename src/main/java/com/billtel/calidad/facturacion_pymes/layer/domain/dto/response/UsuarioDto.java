@@ -1,6 +1,4 @@
 package com.billtel.calidad.facturacion_pymes.layer.domain.dto.response;
-
-import com.billtel.calidad.facturacion_pymes.layer.domain.dto.simplificados.EmpresaSimpleDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +13,6 @@ public class UsuarioDto {
     private String username;
     private String email;
     private boolean admin;
-    private List<EmpresaSimpleDto> empresas;
+    private List<EmpresaDto> empresas;
 
 }

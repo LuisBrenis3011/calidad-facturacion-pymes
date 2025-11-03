@@ -1,7 +1,7 @@
 package com.billtel.calidad.facturacion_pymes.layer.business.facade;
 
-import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobanteRequest.ComprobanteRequest;
-import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.comprobanteResponse.ComprobanteDto;
+import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.comprobante_request.ComprobanteRequest;
+import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.comprobante_response.ComprobanteDto;
 import java.util.List;
 import java.util.Optional;
 

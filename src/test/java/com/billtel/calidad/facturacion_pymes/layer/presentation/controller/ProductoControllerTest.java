@@ -3,8 +3,8 @@ package com.billtel.calidad.facturacion_pymes.layer.presentation.controller;
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IProductoFacade;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.ProductoRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.ProductoDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,6 +16,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -30,8 +33,9 @@ class ProductoControllerTest {
     private IProductoFacade productoFacade;
 
     @Test
-    void testListAllProductos() throws Exception {
-        Mockito.when(productoFacade.findAll())
+    @DisplayName("GET /producto debe listar todos los productos")
+    void listAllProductos() throws Exception {
+        when(productoFacade.findAll())
                 .thenReturn(List.of(
                         new ProductoDto(1L, "Lapicero", "Azul punta fina", new BigDecimal("2.50"), "UND"),
                         new ProductoDto(2L, "Cuaderno", "Cuadriculado 100 hojas", new BigDecimal("5.00"), "UND")
@@ -44,8 +48,9 @@ class ProductoControllerTest {
     }
 
     @Test
-    void testListProductosByEmpresa() throws Exception {
-        Mockito.when(productoFacade.findByEmpresaId(1L))
+    @DisplayName("GET /producto/empresa/{empresaId} debe listar productos de la empresa")
+    void listProductosByEmpresa() throws Exception {
+        when(productoFacade.findByEmpresaId(1L))
                 .thenReturn(List.of(
                         new ProductoDto(3L, "Borrador", "Suave blanco", new BigDecimal("1.00"), "UND")
                 ));
@@ -56,8 +61,9 @@ class ProductoControllerTest {
     }
 
     @Test
-    void testGetProductoByIdFound() throws Exception {
-        Mockito.when(productoFacade.findById(1L))
+    @DisplayName("GET /producto/{id} debe devolver producto cuando existe")
+    void getProductoByIdFound() throws Exception {
+        when(productoFacade.findById(1L))
                 .thenReturn(Optional.of(new ProductoDto(1L, "Regla", "30cm transparente", new BigDecimal("3.50"), "UND")));
 
         mockMvc.perform(get("/producto/1"))
@@ -67,17 +73,39 @@ class ProductoControllerTest {
     }
 
     @Test
-    void testGetProductoByIdNotFound() throws Exception {
-        Mockito.when(productoFacade.findById(99L)).thenReturn(Optional.empty());
+    @DisplayName("GET /producto/{id} debe devolver 404 cuando no existe")
+    void getProductoByIdNotFound() throws Exception {
+        when(productoFacade.findById(99L)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/producto/99"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void testCreateProducto() throws Exception {
+    @DisplayName("GET /producto/{id}/empresa/{empresaId} debe devolver producto de empresa cuando existe")
+    void getProductoByIdAndEmpresaFound() throws Exception {
+        when(productoFacade.findByIdAndEmpresaId(1L, 2L))
+                .thenReturn(Optional.of(new ProductoDto(1L, "Pegamento", "Extra fuerte", new BigDecimal("2.00"), "UND")));
+
+        mockMvc.perform(get("/producto/1/empresa/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nombre").value("Pegamento"));
+    }
+
+    @Test
+    @DisplayName("GET /producto/{id}/empresa/{empresaId} debe devolver 404 cuando no existe")
+    void getProductoByIdAndEmpresaNotFound() throws Exception {
+        when(productoFacade.findByIdAndEmpresaId(99L, 2L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/producto/99/empresa/2"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("POST /producto/empresa/{empresaId} debe crear producto")
+    void createProducto() throws Exception {
         ProductoDto nuevo = new ProductoDto(10L, "Tijeras", "Corte fino", new BigDecimal("4.50"), "UND");
-        Mockito.when(productoFacade.create(Mockito.any(ProductoRequest.class))).thenReturn(nuevo);
+        when(productoFacade.create(any(ProductoRequest.class))).thenReturn(nuevo);
 
         mockMvc.perform(post("/producto/empresa/2")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -89,9 +117,10 @@ class ProductoControllerTest {
     }
 
     @Test
-    void testUpdateProductoFound() throws Exception {
+    @DisplayName("PUT /producto/{id}/empresa/{empresaId} debe actualizar producto cuando existe")
+    void updateProductoFound() throws Exception {
         ProductoDto actualizado = new ProductoDto(1L, "Tijeras Pro", "Corte premium", new BigDecimal("5.50"), "UND");
-        Mockito.when(productoFacade.update(Mockito.eq(1L), Mockito.any(ProductoRequest.class)))
+        when(productoFacade.update(eq(1L), any(ProductoRequest.class)))
                 .thenReturn(Optional.of(actualizado));
 
         mockMvc.perform(put("/producto/1/empresa/2")
@@ -103,8 +132,9 @@ class ProductoControllerTest {
     }
 
     @Test
-    void testUpdateProductoNotFound() throws Exception {
-        Mockito.when(productoFacade.update(Mockito.eq(99L), Mockito.any(ProductoRequest.class)))
+    @DisplayName("PUT /producto/{id}/empresa/{empresaId} debe devolver 404 cuando no existe")
+    void updateProductoNotFound() throws Exception {
+        when(productoFacade.update(eq(99L), any(ProductoRequest.class)))
                 .thenReturn(Optional.empty());
 
         mockMvc.perform(put("/producto/99/empresa/1")
@@ -114,16 +144,18 @@ class ProductoControllerTest {
     }
 
     @Test
-    void testDeleteProductoFound() throws Exception {
-        Mockito.when(productoFacade.deleteByIdAndEmpresaId(1L, 2L)).thenReturn(true);
+    @DisplayName("DELETE /producto/{id}/empresa/{empresaId} debe eliminar producto cuando existe")
+    void deleteProductoFound() throws Exception {
+        when(productoFacade.deleteByIdAndEmpresaId(1L, 2L)).thenReturn(true);
 
         mockMvc.perform(delete("/producto/1/empresa/2"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    void testDeleteProductoNotFound() throws Exception {
-        Mockito.when(productoFacade.deleteByIdAndEmpresaId(99L, 1L)).thenReturn(false);
+    @DisplayName("DELETE /producto/{id}/empresa/{empresaId} debe devolver 404 cuando no existe")
+    void deleteProductoNotFound() throws Exception {
+        when(productoFacade.deleteByIdAndEmpresaId(99L, 1L)).thenReturn(false);
 
         mockMvc.perform(delete("/producto/99/empresa/1"))
                 .andExpect(status().isNotFound());

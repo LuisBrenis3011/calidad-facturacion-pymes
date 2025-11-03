@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -49,8 +50,8 @@ class EmpresaControllerTest {
 
     @Test
     @WithMockUser(username = "brenis", roles = "USER")
-    @DisplayName("GET /empresa debe retornar lista de empresas del usuario")
-    void listEmpresasPorUsuario() throws Exception {
+    @DisplayName("GET /empresa debe retornar lista de empresas del usuario autenticado")
+    void listEmpresasConUsuarioAutenticado() throws Exception {
         when(empresaFacade.findByUsername("brenis"))
                 .thenReturn(List.of(empresaDto));
 
@@ -61,22 +62,22 @@ class EmpresaControllerTest {
     }
 
     @Test
-    @DisplayName("GET /empresa debe retornar 401 si no hay usuario autenticado")
-    void listEmpresasSinUsuario() throws Exception {
+    @DisplayName("GET /empresa debe retornar 401 cuando no hay usuario autenticado")
+    void listEmpresasSinUsuarioAutenticado() throws Exception {
         mockMvc.perform(get("/empresa"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(username = "brenis", roles = "USER")
-    @DisplayName("POST /empresa debe crear una empresa para el usuario autenticado")
-    void createEmpresa() throws Exception {
+    @DisplayName("POST /empresa debe crear empresa para usuario autenticado")
+    void createEmpresaConUsuarioAutenticado() throws Exception {
         EmpresaRequest req = new EmpresaRequest();
         req.setRazonSocial("NuevaCorp");
         req.setRuc("11122233344");
         req.setDireccion("Calle Nueva 456");
 
-        when(empresaFacade.create(ArgumentMatchers.any())).thenReturn(empresaDto);
+        when(empresaFacade.create(any())).thenReturn(empresaDto);
 
         mockMvc.perform(post("/empresa")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -86,9 +87,21 @@ class EmpresaControllerTest {
     }
 
     @Test
+    @DisplayName("POST /empresa debe retornar 401 cuando no hay usuario autenticado")
+    void createEmpresaSinUsuarioAutenticado() throws Exception {
+        EmpresaRequest req = new EmpresaRequest();
+        req.setRazonSocial("NuevaCorp");
+
+        mockMvc.perform(post("/empresa")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     @WithMockUser(username = "brenis", roles = "USER")
-    @DisplayName("PUT /empresa/{id} debe actualizar una empresa existente")
-    void updateEmpresa() throws Exception {
+    @DisplayName("PUT /empresa/{id} debe actualizar empresa cuando existe")
+    void updateEmpresaExistente() throws Exception {
         EmpresaRequest req = new EmpresaRequest();
         req.setRazonSocial("TechCorp Updated");
         req.setDireccion("Av. Modificada 789");
@@ -110,8 +123,23 @@ class EmpresaControllerTest {
     }
 
     @Test
-    @DisplayName("PUT /empresa/{id} debe retornar 401 si no hay usuario autenticado")
-    void updateEmpresaSinUsuario() throws Exception {
+    @WithMockUser(username = "brenis", roles = "USER")
+    @DisplayName("PUT /empresa/{id} debe retornar 404 cuando no existe")
+    void updateEmpresaNoExistente() throws Exception {
+        EmpresaRequest req = new EmpresaRequest();
+        req.setRazonSocial("NoExiste");
+
+        when(empresaFacade.update(any(), eq(99L))).thenReturn(Optional.empty());
+
+        mockMvc.perform(put("/empresa/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("PUT /empresa/{id} debe retornar 401 cuando no hay usuario autenticado")
+    void updateEmpresaSinUsuarioAutenticado() throws Exception {
         EmpresaRequest req = new EmpresaRequest();
         req.setRazonSocial("Fake");
 
@@ -123,18 +151,22 @@ class EmpresaControllerTest {
 
     @Test
     @WithMockUser(username = "brenis", roles = "USER")
-    @DisplayName("DELETE /empresa/{id} debe eliminar empresa si hay usuario autenticado")
-    void deleteEmpresa() throws Exception {
+    @DisplayName("DELETE /empresa/{id} debe eliminar empresa cuando hay usuario autenticado")
+    void deleteEmpresaConUsuarioAutenticado() throws Exception {
         doNothing().when(empresaFacade).deleteById(1L);
 
         mockMvc.perform(delete("/empresa/1"))
                 .andExpect(status().isNoContent());
+
+        verify(empresaFacade, times(1)).deleteById(1L);
     }
 
     @Test
-    @DisplayName("DELETE /empresa/{id} debe retornar 401 si no hay usuario autenticado")
-    void deleteEmpresaSinUsuario() throws Exception {
+    @DisplayName("DELETE /empresa/{id} debe retornar 401 cuando no hay usuario autenticado")
+    void deleteEmpresaSinUsuarioAutenticado() throws Exception {
         mockMvc.perform(delete("/empresa/1"))
                 .andExpect(status().isUnauthorized());
+
+        verify(empresaFacade, never()).deleteById(anyLong());
     }
 }

@@ -1,8 +1,8 @@
 package com.billtel.calidad.facturacion_pymes.layer.business.facade.impl;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IEmpresaFacade;
-import com.billtel.calidad.facturacion_pymes.layer.business.mapper.empresaMapper.EmpresaDtoMapper;
-import com.billtel.calidad.facturacion_pymes.layer.business.mapper.empresaMapper.EmpresaRequestMapper;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.empresa_mapper.EmpresaDtoMapper;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.empresa_mapper.EmpresaRequestMapper;
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IEmpresaService;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.EmpresaRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.response.EmpresaDto;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
@@ -25,9 +23,9 @@ public class EmpresaFacade implements IEmpresaFacade {
     public List<EmpresaDto> findAll() {
         var empresas = empresaService.findAll();
 
-        return StreamSupport.stream(empresas.spliterator(), false)
+        return empresas.stream()
                 .map(empresaDtoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -36,7 +34,7 @@ public class EmpresaFacade implements IEmpresaFacade {
 
         return empresas.stream()
                 .map(empresaDtoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

@@ -8,16 +8,17 @@ import com.billtel.calidad.facturacion_pymes.layer.persistence.EmpresaRepository
 import com.billtel.calidad.facturacion_pymes.layer.persistence.ProductoRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@Slf4j
 @Transactional
 @AllArgsConstructor
 public class ComprobanteServiceImpl implements IComprobanteService {
@@ -29,7 +30,7 @@ public class ComprobanteServiceImpl implements IComprobanteService {
     @Override
     public List<Comprobante> findAll() {
         return StreamSupport.stream(comprobanteRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -105,8 +106,8 @@ public class ComprobanteServiceImpl implements IComprobanteService {
         comprobanteBase.setDetalles(detalles);
         comprobanteBase.setFechaEmision(LocalDateTime.now());
         comprobanteBase.setEstadoSunat(Comprobante.EstadoSunat.PENDIENTE);
-        System.out.println(">>> Correlativo generado: " + comprobanteBase.getCorrelativo());
-        System.out.println(">>> Serie: " + comprobanteBase.getSerie());
+        log.info(">>> Correlativo generado: " + comprobanteBase.getCorrelativo());
+        log.info(">>> Serie: " + comprobanteBase.getSerie());
 
         return comprobanteRepository.save(comprobanteBase);
     }

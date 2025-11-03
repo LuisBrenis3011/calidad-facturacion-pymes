@@ -1,9 +1,9 @@
 package com.billtel.calidad.facturacion_pymes.layer.business.facade.impl;
 
 import com.billtel.calidad.facturacion_pymes.layer.business.facade.IUsuarioFacade;
-import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuarioMapper.UsuarioCreateRequestMapper;
-import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuarioMapper.UsuarioDtoMapper;
-import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuarioMapper.UsuarioRequestMapper;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuario_mapper.UsuarioCreateRequestMapper;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuario_mapper.UsuarioDtoMapper;
+import com.billtel.calidad.facturacion_pymes.layer.business.mapper.usuario_mapper.UsuarioRequestMapper;
 import com.billtel.calidad.facturacion_pymes.layer.business.service.IUsuarioService;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.UsuarioCreateRequest;
 import com.billtel.calidad.facturacion_pymes.layer.domain.dto.request.UsuarioRequest;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -45,7 +44,7 @@ public class UsuarioFacade implements IUsuarioFacade {
 
         return StreamSupport.stream(users.spliterator(), false)
                 .map(usuarioDtoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 
@@ -67,11 +66,6 @@ public class UsuarioFacade implements IUsuarioFacade {
 
     @Override
     public void delete(Long id) {
-
-        var user = usuarioService.findById(id);
-
-        //aca faltaría lógica para validar jeje
-
         usuarioService.delete(id);
     }
 }
